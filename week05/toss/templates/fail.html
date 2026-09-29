@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 실패</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .container { width: 100%; max-width: 400px; border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+        h1 { color: #dc3545; }
+        .info { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>결제 실패</h1>
+        <div class="info"><strong>Code:</strong> <span>{{ code }}</span></div>
+        <div class="info"><strong>Message:</strong> <span>{{ message }}</span></div>
+        <hr>
+        <p><a href="/">다시 시도</a></p>
+    </div>
+</body>
+</html>
