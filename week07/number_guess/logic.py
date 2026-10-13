@@ -25,8 +25,8 @@ def judge(guess, answer):
     return "정답입니다"
 
 
-def format_record(n, guess, verdict):
-    return f"{n}회차 · {guess} · {verdict}"
+def format_record(guess, verdict):
+    return f"{guess} ({verdict})"
 
 
 def update_best(best, tries):

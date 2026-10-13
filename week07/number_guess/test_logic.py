@@ -45,13 +45,13 @@ class JudgeTest(unittest.TestCase):
 class FormatRecordTest(unittest.TestCase):
     def test_format_record(self):
         cases = [
-            (3, 50, "더 큽니다", "3회차 · 50 · 더 큽니다"),
-            (1, 100, "더 작습니다", "1회차 · 100 · 더 작습니다"),
-            (7, 42, "정답입니다", "7회차 · 42 · 정답입니다"),
+            (50, "더 큽니다", "50 (더 큽니다)"),
+            (100, "더 작습니다", "100 (더 작습니다)"),
+            (42, "정답입니다", "42 (정답입니다)"),
         ]
-        for n, guess, verdict, expected in cases:
-            with self.subTest(n=n, guess=guess):
-                self.assertEqual(logic.format_record(n, guess, verdict), expected)
+        for guess, verdict, expected in cases:
+            with self.subTest(guess=guess):
+                self.assertEqual(logic.format_record(guess, verdict), expected)
 
 
 class UpdateBestTest(unittest.TestCase):
