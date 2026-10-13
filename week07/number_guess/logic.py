@@ -27,3 +27,9 @@ def judge(guess, answer):
 
 def format_record(n, guess, verdict):
     return f"{n}회차 · {guess} · {verdict}"
+
+
+def update_best(best, tries):
+    if best is None or tries < best:
+        return tries
+    return best

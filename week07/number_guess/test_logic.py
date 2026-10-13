@@ -54,6 +54,20 @@ class FormatRecordTest(unittest.TestCase):
                 self.assertEqual(logic.format_record(n, guess, verdict), expected)
 
 
+class UpdateBestTest(unittest.TestCase):
+    def test_update_best(self):
+        cases = [
+            (None, 5, 5),
+            (10, 5, 5),
+            (5, 10, 5),
+            (5, 5, 5),
+            (1, 7, 1),
+        ]
+        for best, tries, expected in cases:
+            with self.subTest(best=best, tries=tries):
+                self.assertEqual(logic.update_best(best, tries), expected)
+
+
 class NewAnswerTest(unittest.TestCase):
     def test_range(self):
         for _ in range(1000):
