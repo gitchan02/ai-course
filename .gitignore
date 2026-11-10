@@ -3,3 +3,4 @@ week10/*.pdf
 .venv/
 __pycache__/
 .DS_Store
+week11/out/
