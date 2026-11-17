@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>나눠 내기</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 16px;
+    font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 16px; line-height: 1.5;
+    background: #f4f5f7; color: #222;
+  }
+  main { max-width: 480px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 8px 0 16px; }
+  h2 { font-size: 18px; margin: 0 0 12px; }
+  .card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  label { display: block; font-weight: 600; margin: 12px 0 6px; }
+  input, button {
+    width: 100%; min-height: 48px; font-size: 16px;
+    border-radius: 8px; padding: 10px 12px;
+  }
+  input { border: 1px solid #c8ccd2; background: #fff; }
+  input[type=file] { padding: 10px 0; border: none; }
+  button {
+    margin-top: 16px; border: none; font-weight: 700;
+    background: #2f6fed; color: #fff; cursor: pointer;
+  }
+  button.sub { background: #e8eefc; color: #2f6fed; }
+  .error { background: #fdecec; color: #b42318; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+  .result { background: #2f6fed; color: #fff; text-align: center; }
+  .result .big { font-size: 32px; font-weight: 800; }
+  .result p { margin: 4px 0; }
+  .item { display: flex; gap: 8px; margin-bottom: 8px; }
+  .item input:first-child { flex: 3; }
+  .item input:last-child { flex: 2; text-align: right; }
+  .hint { color: #666; font-size: 14px; margin: 4px 0 0; }
+  .loading { display: none; text-align: center; color: #666; margin-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>나눠 내기</h1>
+
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+  {% if result %}
+  <section class="card result">
+    <p>{{ "{:,}".format(result.total) }}원 ÷ {{ result.people }}명</p>
+    <p class="big">1인당 {{ "{:,}".format(result.each) }}원</p>
+    {% if result.rest %}
+    <p>{{ "{:,}".format(result.rest) }}원이 남습니다.<br>
+       한 명이 {{ "{:,}".format(result.each + result.rest) }}원을 내면 딱 맞습니다.</p>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {% if items is not none %}
+  <section class="card">
+    <h2>읽은 항목</h2>
+    <p class="hint">AI가 읽은 금액은 틀릴 수 있습니다. 사진과 다르면 고치고 다시 계산하세요.</p>
+    <form method="post">
+      <input type="hidden" name="mode" value="items">
+      {% for it in items %}
+      <div class="item">
+        <input name="name" value="{{ it.name }}" aria-label="항목 이름">
+        <input name="price" value="{{ it.price }}" inputmode="numeric" aria-label="금액">
+      </div>
+      {% endfor %}
+      <div class="item">
+        <input name="name" placeholder="항목 추가" aria-label="추가할 항목 이름">
+        <input name="price" placeholder="금액" inputmode="numeric" aria-label="추가할 금액">
+      </div>
+      <label for="people3">인원수</label>
+      <input id="people3" name="people" inputmode="numeric" placeholder="예: 3" value="{{ form.people }}">
+      <button type="submit">고친 금액으로 다시 계산</button>
+    </form>
+  </section>
+  {% endif %}
+
+  <section class="card">
+    <h2>금액 직접 넣기</h2>
+    <form method="post">
+      <input type="hidden" name="mode" value="calc">
+      <label for="amount">금액 (원)</label>
+      <input id="amount" name="amount" inputmode="numeric" placeholder="예: 17000"
+             value="{{ form.amount if form.mode == 'calc' else '' }}">
+      <label for="people">인원수</label>
+      <input id="people" name="people" inputmode="numeric" placeholder="예: 3" value="{{ form.people }}">
+      <button type="submit">계산</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>영수증 사진으로</h2>
+    <form method="post" enctype="multipart/form-data" onsubmit="document.getElementById('loading').style.display='block'">
+      <input type="hidden" name="mode" value="receipt">
+      <label for="photo">영수증 사진</label>
+      <input id="photo" type="file" name="photo" accept="image/*">
+      <label for="people2">인원수</label>
+      <input id="people2" name="people" inputmode="numeric" placeholder="예: 3" value="{{ form.people }}">
+      <button type="submit" class="sub">사진 읽고 계산</button>
+      <p id="loading" class="loading">AI가 영수증을 읽는 중입니다…</p>
+    </form>
+  </section>
+</main>
+</body>
+</html>
